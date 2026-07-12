@@ -14,6 +14,16 @@ bar): an alarm icon shows in the indicator block while it's ticking, and
 the grid gets a Sonnerie tile — click to toggle, expand for the
 next-beat time, test buttons for both sounds, and Preferences.
 
+## Project status
+
+Sonnerie is a complete, fully functional GNOME Shell extension. It is
+distributed from this repository **deliberately** rather than from
+extensions.gnome.org: I maintain it for my own machines (currently
+GNOME 50 on Fedora) and don't want to take on maintenance obligations
+beyond that. It should work anywhere its `shell-version` allows, but
+there are no compatibility promises, release schedule, or support —
+fork freely.
+
 ## Requirements
 
 - GNOME Shell 45 or later (developed and tested on GNOME 50 / Fedora;
@@ -31,12 +41,16 @@ make install
 ```
 
 GNOME Shell only scans for new or changed extensions at login (on
-Wayland there is no in-session reload), so **log out and back in**,
-then:
+Wayland there is no in-session reload), so **log out and back in**.
+Then, back in a fresh terminal, `cd` into the clone again and enable:
 
 ```sh
+cd sonnerie
 make enable
 ```
+
+(Or from anywhere: `gnome-extensions enable sonnerie@bphopkins.net`,
+which is all that target does.)
 
 ## Configuration
 
@@ -46,7 +60,10 @@ Everything is in Preferences (from the Quick Settings tile, or
 - **Profile** — one-click beat patterns: Quarter-Hour, Twenty-Minute,
   Half-Hour, Hourly. Picking one sets the interval and major cadence;
   the selector reads "Custom" whenever the values below don't match a
-  preset. Window, anchor and sounds are never touched by a profile.
+  preset. Window, anchor and sounds are never touched by a profile, and
+  a profile is never *stored* — it's a shortcut that writes the settings
+  below, so edits you make afterwards (sounds, a tweaked interval) are
+  the settings, and nothing reasserts a profile over them at login.
 - **Daily window** — beats only sound between the start and end times.
   A start later than the end wraps past midnight (e.g. 22:00–06:00),
   and a beat landing exactly on the end time still sounds.
@@ -94,7 +111,7 @@ then `make sounds && make listen`.
 make check       # syntax-check the JS, validate the schema
 make sounds      # regenerate the palette from tools/make_sounds.py
 make listen      # audition all bundled sounds
-make pack        # build the extensions.gnome.org submission zip
+make pack        # build a distributable zip (gnome-extensions pack)
 make uninstall
 ```
 
