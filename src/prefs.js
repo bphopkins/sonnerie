@@ -17,7 +17,22 @@ const BUNDLED = [
     ['dingdong', 'Ding-Dong'],
     ['bourdon', 'Low Bell'],
 ];
-const DEFAULT_SOUND = {'minor-sound': 'woodblock', 'major-sound': 'bell'};
+const DEFAULT_SOUND = {'minor-sound': 'tick', 'major-sound': 'woodblock'};
+
+// Profile presets: named (interval, major cadence) pairs. A profile is
+// derived state, not a stored setting — the combo shows whichever preset
+// matches the current values, or "Custom" if none does. Window, anchor
+// and sounds are untouched by profile selection.
+const PRESETS = [
+    {label: 'Quarter-Hour', interval: 15, majorEvery: 4,
+        desc: '15-minute beats; the hour mark is major'},
+    {label: 'Twenty-Minute', interval: 20, majorEvery: 3,
+        desc: '20-minute beats; the hour mark is major'},
+    {label: 'Half-Hour', interval: 30, majorEvery: 2,
+        desc: '30-minute beats; the hour mark is major'},
+    {label: 'Hourly', interval: 60, majorEvery: 1,
+        desc: 'One beat per hour, always major'},
+];
 
 export default class SonneriePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
@@ -27,6 +42,16 @@ export default class SonneriePreferences extends ExtensionPreferences {
 
         const page = new Adw.PreferencesPage({title: 'Sonnerie'});
         window.add(page);
+
+        // --- profile ----------------------------------------------------
+        const profileGroup = new Adw.PreferencesGroup({
+            title: 'Profile',
+            description: 'Common beat patterns; picking one sets the ' +
+                'interval and major cadence below. Everything else is ' +
+                'left alone.',
+        });
+        page.add(profileGroup);
+        profileGroup.add(this._profileRow(settings));
 
         // --- daily window ---------------------------------------------
         const windowGroup = new Adw.PreferencesGroup({
@@ -84,6 +109,44 @@ export default class SonneriePreferences extends ExtensionPreferences {
             'Minor Click'));
         soundGroup.add(this._soundRow(window, settings, 'major-sound',
             'Major Click'));
+    }
+
+    _profileRow(settings) {
+        const row = new Adw.ComboRow({
+            title: 'Profile',
+            model: Gtk.StringList.new(
+                PRESETS.map(p => p.label).concat(['Custom'])),
+        });
+        const customIndex = PRESETS.length;
+
+        let syncing = false;
+        const sync = () => {
+            syncing = true;
+            const interval = settings.get_int('interval-minutes');
+            const majorEvery = settings.get_int('major-every');
+            const idx = PRESETS.findIndex(p =>
+                p.interval === interval && p.majorEvery === majorEvery);
+            row.selected = idx >= 0 ? idx : customIndex;
+            row.subtitle = idx >= 0
+                ? PRESETS[idx].desc
+                : 'Interval and major cadence set manually below';
+            syncing = false;
+        };
+        sync();
+        settings.connect('changed::interval-minutes', sync);
+        settings.connect('changed::major-every', sync);
+
+        row.connect('notify::selected', () => {
+            if (syncing || row.selected >= customIndex)
+                return;   // "Custom" is a state label, not an action
+            const p = PRESETS[row.selected];
+            syncing = true;   // suppress mid-write flicker to "Custom"
+            settings.set_int('interval-minutes', p.interval);
+            settings.set_int('major-every', p.majorEvery);
+            syncing = false;
+            sync();
+        });
+        return row;
     }
 
     // A row with hour and minute spin buttons backed by a

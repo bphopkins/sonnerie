@@ -36,7 +36,12 @@ extensions.gnome.org and there is no plan to.
   window start time — they are deliberately independent settings.
 - Sound settings are strings: a bare name selects
   `src/sounds/<name>.wav`; anything containing `/` is a custom file
-  path; `''` falls back to the per-key default (woodblock/bell).
+  path; `''` falls back to the per-key default (tick/woodblock — keep
+  `DEFAULT_SOUND` in extension.js, prefs.js and the schema defaults in
+  agreement).
+- Profiles (the `PRESETS` list in prefs.js) are derived state, not a
+  stored setting: the combo just reflects whether (interval,
+  major-every) matches a preset. Don't add a "profile" GSettings key.
 - The scheduler sleeps at most 30 min per wakeup and skips beats that
   fire > 60 s late (suspend/resume safety). Preserve both behaviors.
 - `make check` must pass before `make install` (it's a dependency).

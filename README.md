@@ -6,7 +6,7 @@ Sonnerie is a GNOME Shell extension that clicks at a configurable
 interval during a daily window, with a distinct **major** click every
 Nth beat — a grandfather clock for the top bar. With the defaults
 (20-minute interval, major every 3rd beat, window 08:00–22:00) you get a
-woodblock tick at :20 and :40 past each hour, a bell on the hour, and
+clock tick at :20 and :40 past each hour, a woodblock on the hour, and
 silence outside waking hours.
 
 It lives in **Quick Settings** (the system menu at the right of the top
@@ -43,6 +43,10 @@ make enable
 Everything is in Preferences (from the Quick Settings tile, or
 `gnome-extensions prefs sonnerie@bphopkins.net`):
 
+- **Profile** — one-click beat patterns: Quarter-Hour, Twenty-Minute,
+  Half-Hour, Hourly. Picking one sets the interval and major cadence;
+  the selector reads "Custom" whenever the values below don't match a
+  preset. Window, anchor and sounds are never touched by a profile.
 - **Daily window** — beats only sound between the start and end times.
   A start later than the end wraps past midnight (e.g. 22:00–06:00),
   and a beat landing exactly on the end time still sounds.
@@ -67,6 +71,9 @@ Everything is in Preferences (from the Quick Settings tile, or
 - The beat grid is derived from each day's midnight, so the daily
   pattern is identical every day even for intervals that don't divide
   24 hours.
+- All settings (and the ticking/paused state) live in GSettings/dconf,
+  so everything survives reboots; since beats are wall-clock-aligned,
+  the schedule after a restart is identical, not shifted.
 
 ## Sounds
 

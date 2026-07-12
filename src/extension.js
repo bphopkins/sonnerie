@@ -27,7 +27,7 @@ const MAX_SLEEP_SECONDS = 1800;
 // rather than sounded off-schedule.
 const LATE_GRACE_SECONDS = 60;
 
-const DEFAULT_SOUND = {'minor-sound': 'woodblock', 'major-sound': 'bell'};
+const DEFAULT_SOUND = {'minor-sound': 'tick', 'major-sound': 'woodblock'};
 
 // --- beat scheduler (no UI) ---------------------------------------------
 

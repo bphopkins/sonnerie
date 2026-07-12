@@ -53,7 +53,7 @@
     </key>
 
     <key name="minor-sound" type="s">
-      <default>'woodblock'</default>
+      <default>'tick'</default>
       <summary>Minor click sound</summary>
       <description>A bare name selects a bundled sound from the extension's
       sounds/ directory; a path containing '/' selects a custom audio file.
@@ -61,7 +61,7 @@
     </key>
 
     <key name="major-sound" type="s">
-      <default>'bell'</default>
+      <default>'woodblock'</default>
       <summary>Major click sound</summary>
       <description>Same semantics as minor-sound.</description>
     </key>
