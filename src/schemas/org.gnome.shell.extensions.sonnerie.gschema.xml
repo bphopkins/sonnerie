@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.sonnerie"
+          path="/org/gnome/shell/extensions/sonnerie/">
+
+    <key name="enabled" type="b">
+      <default>true</default>
+      <summary>Whether the clock is ticking</summary>
+      <description>Master switch, also toggled from Quick Settings.</description>
+    </key>
+
+    <key name="start-minutes" type="i">
+      <range min="0" max="1439"/>
+      <default>480</default>
+      <summary>Start of the daily window, in minutes since midnight</summary>
+      <description>Default 480 = 08:00. If start is later than end, the
+      window wraps past midnight (e.g. 22:00 to 06:00).</description>
+    </key>
+
+    <key name="end-minutes" type="i">
+      <range min="0" max="1439"/>
+      <default>1320</default>
+      <summary>End of the daily window, in minutes since midnight (inclusive)</summary>
+      <description>Default 1320 = 22:00. A beat falling exactly on the end
+      time still sounds.</description>
+    </key>
+
+    <key name="interval-minutes" type="i">
+      <range min="1" max="720"/>
+      <default>20</default>
+      <summary>Minutes between beats</summary>
+      <description>Beats are aligned to the clock, counted from the anchor
+      time: with the default midnight anchor, an interval of 20 beats at
+      :00, :20 and :40 of every hour.</description>
+    </key>
+
+    <key name="anchor-minutes" type="i">
+      <range min="0" max="1439"/>
+      <default>0</default>
+      <summary>Anchor for the beat grid, in minutes since midnight</summary>
+      <description>Beat k falls at anchor + k * interval; the grid extends
+      both directions, so beats also fall before the anchor. Major-beat
+      counting is anchored here too. Default 0 = midnight.</description>
+    </key>
+
+    <key name="major-every" type="i">
+      <range min="0" max="60"/>
+      <default>3</default>
+      <summary>Every Nth beat is a major beat</summary>
+      <description>Counted from the anchor, so with a 20-minute interval,
+      a midnight anchor and N=3 the major beat lands on the hour.
+      0 disables major beats entirely; 1 makes every beat major.</description>
+    </key>
+
+    <key name="minor-sound" type="s">
+      <default>'woodblock'</default>
+      <summary>Minor click sound</summary>
+      <description>A bare name selects a bundled sound from the extension's
+      sounds/ directory; a path containing '/' selects a custom audio file.
+      The empty string falls back to the default.</description>
+    </key>
+
+    <key name="major-sound" type="s">
+      <default>'bell'</default>
+      <summary>Major click sound</summary>
+      <description>Same semantics as minor-sound.</description>
+    </key>
+
+  </schema>
+</schemalist>

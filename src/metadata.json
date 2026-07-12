@@ -1,0 +1,8 @@
+{
+  "uuid": "sonnerie@bphopkins.net",
+  "name": "Sonnerie",
+  "description": "A metronome for hours, not minutes: minor and major clicks at configurable intervals during a daily window, like a grandfather clock in your top bar.",
+  "shell-version": ["49", "50"],
+  "settings-schema": "org.gnome.shell.extensions.sonnerie",
+  "url": "https://github.com/bphopkins/sonnerie"
+}
